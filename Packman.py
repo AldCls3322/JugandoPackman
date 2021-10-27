@@ -190,6 +190,13 @@ def move():
                 vector(0, -10),
             ]
             plan = choice(options)
+
+            # Make Ghosts move closer to PacMan once they hit a wall, if no movement gets them closer then they'll wait
+            if valid(point + plan):
+                while (abs(pacman.x - (point.x+plan.x)) > abs(pacman.x - point.x) or abs(pacman.y - (point.y+plan.y)) > abs(pacman.y - point.y)):
+                    plan = choice(options)
+                print(abs(pacman.x - (point.x+plan.x)), abs(pacman.x - point.x))
+            
             course.x = plan.x
             course.y = plan.y
 
