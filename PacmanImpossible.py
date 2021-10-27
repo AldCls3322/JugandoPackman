@@ -103,7 +103,7 @@ mapas = [
     ]
 ]
 tiles = mapas[randint(0,3)]
-    
+
 def square(x, y):
     "Draw square using path at (x, y)."
     path.up()
@@ -180,25 +180,24 @@ def move():
     dot(20, 'yellow')
 
     for point, course in ghosts:
+        options = [
+            vector(10, 0),
+            vector(-10, 0),
+            vector(0, 10),
+            vector(0, -10),
+        ]
+        plan = choice(options)
+
+        # Make Ghosts move closer to PacMan once they hit a wall, if no movement gets them closer then they'll wait
+        if valid(point + plan):
+            while (abs(pacman.x - (point.x+plan.x)) > abs(pacman.x - point.x) or abs(pacman.y - (point.y+plan.y)) > abs(pacman.y - point.y)):
+                plan = choice(options)
+            print(abs(pacman.x - (point.x+plan.x)), abs(pacman.x - point.x))
+            
+        course.x = plan.x
+        course.y = plan.y
         if valid(point + course):
             point.move(course)
-        else:
-            options = [
-                vector(10, 0),
-                vector(-10, 0),
-                vector(0, 10),
-                vector(0, -10),
-            ]
-            plan = choice(options)
-
-            # Make Ghosts move closer to PacMan once they hit a wall, if no movement gets them closer then they'll wait
-            if valid(point + plan):
-                while (abs(pacman.x - (point.x+plan.x)) > abs(pacman.x - point.x) or abs(pacman.y - (point.y+plan.y)) > abs(pacman.y - point.y)):
-                    plan = choice(options)
-                print(abs(pacman.x - (point.x+plan.x)), abs(pacman.x - point.x))
-            
-            course.x = plan.x
-            course.y = plan.y
 
         up()
         goto(point.x + 10, point.y + 10)
